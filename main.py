@@ -40,7 +40,6 @@ model = cv2.dnn.readNetFromTensorflow('models/frozen_inference_graph.pb',
                                    'models/ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
 path ="images/"
 listOfFiles =os.listdir(path)
-print(listOfFiles)
 listOfFiles = sorted(listOfFiles, key=lambda k: random.random())
 
 
