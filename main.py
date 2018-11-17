@@ -1,5 +1,14 @@
 import cv2
 import os
+import random
+from gpiozero import LED, Servo
+from time import sleep
+
+
+bottom_servo = Servo(21)
+top_servo = Servo(20)
+led = LED(14)
+
 # Pretrained classes in the model
 classNames = {0: 'background',
               1: 'person', 2: 'bicycle', 3: 'car', 4: 'motorcycle', 5: 'airplane', 6: 'bus',
@@ -28,28 +37,82 @@ def id_class_name(class_id, classes):
 
 # Loading model
 model = cv2.dnn.readNetFromTensorflow('models/frozen_inference_graph.pb',
-                                      'models/ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
-numDoggos= 1
-numClassifiedDoggos = 1
+                                   'models/ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
+path ="images/"
+listOfFiles =os.listdir(path)
+print(listOfFiles)
+listOfFiles = sorted(listOfFiles, key=lambda k: random.random())
 
-path ="./PetImages/Dog/validation_Data/"
-for file in os.listdir(path):
+
+
+for file in listOfFiles:
     image = cv2.imread(path+file)
     if(not image is None):
         image_height, image_width, _ = image.shape
-        numDoggos=numDoggos+1
         model.setInput(cv2.dnn.blobFromImage(image, size=(300, 300), swapRB=True))
         output = model.forward()
         # print(output[0,0,:,:].shape)
-        sameTime=False
         for detection in output[0, 0, :, :]:
             confidence = detection[2]
             if confidence > .5:
                 class_id = detection[1]
                 class_name=id_class_name(class_id,classNames)
-                if(class_name=="dog" and sameTime==False):
-                    sameTime=True
-                    numClassifiedDoggos=numClassifiedDoggos+1
+                if(class_name=="dog"):
+                    print("woof...")
+                    i=0
+                    done = False
+                    led.on()
+                    while(not done):
+                        i+=1
+                        j= random.randint(1,3)
+                        if(j==1):
+                            bottom_servo.min()
+                            bottom_servo.mid()
+                            top_servo.max()
+                            top_servo.mid()
+                        if(j==2):
+                            bottom_servo.mid()
+                            bottom_servo.max()
+                            top_servo.mid()
+                            top_servo.min()
+                        if(j==3):
+                            bottom_servo.max()
+                            bottom_servo.min()
+                            top_servo.min()
+                            top_servo.max()
+                        if(i==10000):
+                            done = True
+                            led.off()
+                    
+                if(class_name=="person"):
+                    print("Hooman")
+                if(class_name=="cat"):
+                    print("meow....")
+                    i=0
+                    done = False
+                    led.on()
+                    while(not done):
+
+                        j= random.randint(1,3)
+                        i+=1
+                        if(j==1):
+                            bottom_servo.min()
+                            bottom_servo.mid()
+                            top_servo.max()
+                            top_servo.mid()
+                        if(j==2):
+                            bottom_servo.mid()
+                            bottom_servo.max()
+                            top_servo.mid()
+                            top_servo.min()
+                        if(j==3):
+                            bottom_servo.max()
+                            bottom_servo.min()
+                            top_servo.min()
+                            top_servo.max()
+                        if(i==10000):
+                            done = True
+                            led.off()
                 print(str(str(class_id) + " " + str(detection[2])  + " " + class_name))
                 box_x = detection[3] * image_width
                 box_y = detection[4] * image_height
@@ -57,52 +120,7 @@ for file in os.listdir(path):
                 box_height = detection[6] * image_height
                 cv2.rectangle(image, (int(box_x), int(box_y)), (int(box_width), int(box_height)), (23, 230, 210), thickness=1)
                 cv2.putText(image,class_name ,(int(box_x), int(box_y+.05*image_height)),cv2.FONT_HERSHEY_SIMPLEX,(.005*image_width),(0, 0, 255))
-        # cv2.imshow('image', image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-
-path ="./PetImages/Cat/validation_Data/"
-numCats= 1
-numClassifiedCats = 1
-for file in os.listdir(path):
-    image = cv2.imread(path+file)
-    if(not image is None):
-
-        image_height, image_width, _ = image.shape
-        numCats=numCats+1
-        model.setInput(cv2.dnn.blobFromImage(image, size=(300, 300), swapRB=True))
-        output = model.forward()
-        # print(output[0,0,:,:].shape)
-
-        sameTime=False
-        for detection in output[0, 0, :, :]:
-
-            confidence = detection[2]
-            if confidence > .5:
-                class_id = detection[1]
-                class_name=id_class_name(class_id,classNames)
-                print(str(str(class_id) + " " + str(detection[2])  + " " + class_name))
-                if(class_name=="cat" and sameTime==False):
-                    numClassifiedCats=numClassifiedCats+1
-                    sameTime=True
-                box_x = detection[3] * image_width
-                box_y = detection[4] * image_height
-                box_width = detection[5] * image_width
-                box_height = detection[6] * image_height
-                cv2.rectangle(image, (int(box_x), int(box_y)), (int(box_width), int(box_height)), (23, 230, 210), thickness=1)
-                cv2.putText(image,class_name ,(int(box_x), int(box_y+.05*image_height)),cv2.FONT_HERSHEY_SIMPLEX,(.005*image_width),(0, 0, 255))
-        # cv2.imshow('image', image)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-# cv2.imwrite("image_box_text.jpg",image)
-print("number of dog photo classified: ")
-print(numDoggos)
-
-print("accuracy of dog classification is: ")
-print(numClassifiedDoggos/numDoggos)
-#roughly 90% on validation data
-print("number of cat photo classified: ")
-print(numCats)
-print("accuracy of cat classification is: ")
-#roughly 95% on validation data
-print(numClassifiedCats/numCats)
+        
+                cv2.imshow('image', image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
