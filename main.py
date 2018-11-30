@@ -41,12 +41,6 @@ def id_class_name(class_id, classes):
 # Loading model
 model = cv2.dnn.readNetFromTensorflow('models/frozen_inference_graph.pb',
                                    'models/ssd_mobilenet_v2_coco_2018_03_29.pbtxt')
-path ="images/"
-listOfFiles =os.listdir(path)
-listOfFiles = sorted(listOfFiles, key=lambda k: random.random())
-
-
-
 camera = PiCamera()
 camera.resolution = (304,304)
 camera.framerate =32
@@ -59,7 +53,6 @@ for frame in camera.capture_continuous(rawCapture,format = "bgr",
         image_height, image_width, _ = image.shape
         model.setInput(cv2.dnn.blobFromImage(image, size=(300, 300), swapRB=True))
         output = model.forward()
-        # print(output[0,0,:,:].shape)
         for detection in output[0, 0, :, :]:
             confidence = detection[2]
             if confidence > .5:
