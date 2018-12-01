@@ -117,3 +117,6 @@ for frame in camera.capture_continuous(rawCapture,format = "bgr",
                 print(str(str(class_id) + " " + str(detection[2])  + " " + class_name))
     rawCapture.truncate(0) 
     
+if __name__="__main__":
+    myEntertainer = PetEntertainer()
+    myEntertainer.run()
