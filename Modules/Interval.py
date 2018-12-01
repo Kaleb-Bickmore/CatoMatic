@@ -1,5 +1,5 @@
-class Interval(self,laserGPIO):
-	def __init__:
+class Interval():
+	def __init__(self,laserGPIO):
 		self.__laserGPIO = laserGPIO
 		self.__sleepTime = 1
 		self.__iterations = 5

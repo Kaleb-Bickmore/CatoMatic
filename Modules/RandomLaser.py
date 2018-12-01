@@ -1,6 +1,6 @@
-import "LaserStrategies.py"
-class RandomLaser(self,laserGPIO):
-	def __init__:
+from LaserStrategies import LaserStrategies
+class RandomLaser():
+	def __init__(self,laserGPIO):
 		self.__laserGPIO = laserGPIO
 		self.__iterations = 4
 		pass

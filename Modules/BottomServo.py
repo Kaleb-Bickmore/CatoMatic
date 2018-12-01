@@ -1,4 +1,4 @@
-Class BottomServo():
+class BottomServo():
 	def __init__(self,bottomServoGPIO):
 		self.__bottomServoGPIO = bottomServoGPIO
 	def moveLeft(self):

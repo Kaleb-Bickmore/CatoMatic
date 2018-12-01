@@ -1,5 +1,5 @@
-class Constant(self,laserGPIO):
-	def __init__:
+class Constant():
+	def __init__(self,laserGPIO):
 		self.__laserGPIO = laserGPIO
 		self.__sleepTime = 5
 		pass

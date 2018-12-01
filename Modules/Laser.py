@@ -1,14 +1,13 @@
-from "Interval.py" import Intervalfrom 
-from "RandomLaser.py" import RandomLaser
-from "Constant.py" import Constant
+from Interval import Interval
+from RandomLaser import RandomLaser
+from Constant import Constant
 import random
-class Laser(self):
+class Laser():
 	__laserStrategies={}
 	def __init__(self,laserGPIO):
-		self.__laserGPIO = laserGPIO
-		self.__laserStrategies[0] = Constant()
-		self.__laserStrategies[1] = RandomLaser()
-		self.__laserStrategies[2] = Interval()
+		self.__laserStrategies[0] = Constant(laserGPIO)
+		self.__laserStrategies[1] = RandomLaser(laserGPIO)
+		self.__laserStrategies[2] = Interval(laserGPIO)
 	def on(self):
 		self.__laserStrategies.get(random.randint(0,2)).run()
 		pass

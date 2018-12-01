@@ -1,5 +1,5 @@
 import random
 import time
-class LaserStrategies(self,LaserGPIO):
-	def run(self):
+class LaserStrategies():
+	def run(self,LaserGPIO):
 		pass
