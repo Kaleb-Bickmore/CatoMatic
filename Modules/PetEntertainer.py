@@ -5,18 +5,20 @@ from gpiozero import LED, Servo
 from CatStrategy import CatStrategy
 from DogStrategy import DogStrategy
 from HumanStrategy import HumanStrategy
+from Motors import Motors
 from Camera import Camera
 class PetEntertainer():
     __objectStrategies = {}
     __openedLED = LED(14)
-    __openedTopServo = Servo(20)
-    __openedBottomServo = Servo(21)
+    __openedTopServo = Servo(21)
+    __openedBottomServo = Servo(20)
     def __init__(self):
         self.__network = cv2.dnn.readNetFromTensorflow('../Network/frozenInferenceGraph.pb',
                                    '../Network/persistedNetwork.pbtxt')
-        self.__objectStrategies["dog"]=DogStrategy(self.__openedBottomServo,self.__openedTopServo,self.__openedLED)
-        self.__objectStrategies["person"]=HumanStrategy(self.__openedBottomServo,self.__openedTopServo,self.__openedLED)
-        self.__objectStrategies["cat"]=CatStrategy(self.__openedBottomServo,self.__openedTopServo,self.__openedLED)
+        self.__motors = Motors(self.__openedBottomServo,self.__openedTopServo)
+        self.__objectStrategies["dog"]=DogStrategy(self.__motors,self.__openedLED)
+        self.__objectStrategies["person"]=HumanStrategy(self.__motors,self.__openedLED)
+        self.__objectStrategies["cat"]=CatStrategy(self.__motors,self.__openedLED)
         self.__camera = Camera(PiCamera())
         self.__classifications = {0: 'background',1: 'person', 2: 'bicycle',
             3: 'car', 4: 'motorcycle', 5: 'airplane', 6: 'bus',
@@ -44,22 +46,25 @@ class PetEntertainer():
             return self.__classifications[classNum]
 
     def run(self):
-        for frame in self.__camera.captureContinousFeed():
-            image = frame.array[:300][:300]
-            if(not image is None):
-                self.__network.setInput(cv2.dnn.blobFromImage(image, 
+        try:
+            for frame in self.__camera.captureContinousFeed():
+                image = frame.array[:300][:300]
+                if(not image is None):
+                    self.__network.setInput(cv2.dnn.blobFromImage(image, 
                                         size=(300, 300), swapRB=True))
-                output =  self.__network.forward()
-                listOfObjects = [detection for detection in output[0, 0, :, :] 
+                    output =  self.__network.forward()
+                    listOfObjects = [detection for detection in output[0, 0, :, :] 
                                            if detection[2] > .5]
-                for myObject in listOfObjects:
-                    objectClassification=self.outputName(myObject[1])
-                    print("looking at a : "+objectClassification + " with "+ str(myObject[2]) + " certainty")
-                    if objectClassification in self.__objectStrategies.keys():
-                        self.__objectStrategies[objectClassification].run()
-                    
-            self.__camera.truncate()
-            
+                    for myObject in listOfObjects:
+                        objectClassification=self.outputName(myObject[1])
+                        print("looking at : "+objectClassification + " with "+ str(myObject[2]) + " certainty")
+                        if objectClassification in self.__objectStrategies.keys():
+                            self.__objectStrategies[objectClassification].run()
+                self.__camera.truncate()
+        except KeyboardInterrupt:
+            self.__motors.moveMiddle()
+        
+        pass
     
 if __name__=="__main__":
     myEntertainer = PetEntertainer()

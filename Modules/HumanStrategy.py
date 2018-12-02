@@ -1,14 +1,13 @@
-from TopServo import TopServo
-from BottomServo import BottomServo
 from Laser import Laser
+from SoundBox import SoundBox
 class HumanStrategy():
-	def __init__(self,topServo,bottomServo,laserServo):
-		self.__topServo = TopServo(topServo)
-		self.__bottomServo = BottomServo(BottomServo)
-		self.__laser = Laser(laserServo)
-
+	def __init__(self,motors,laserServo):
+		self.__motors = motors
+		self.__laser = Laser(laserServo,motors)
+		self.__soundBox = SoundBox("../R2Noises")
+		
 	def run(self):
+		self.__soundBox.play()
 		self.__laser.on()
-		print("hooman, dance!")
 		pass
 

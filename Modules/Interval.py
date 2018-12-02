@@ -1,14 +1,21 @@
 import time
 class Interval():
-	def __init__(self,laserGPIO):
+	def __init__(self,laserGPIO,motor):
 		self.__laserGPIO = laserGPIO
 		self.__sleepTime = 1
 		self.__iterations = 5
+		self.__motor = motor
 		pass
 	def run(self):
+		print("interval")
 		for i in range(self.__iterations):
 			self.__laserGPIO.on()
-			time.sleep(self.__sleepTime)
+			self.__motor.move(["down","right"])
+			self.__motor.move(["down","left"])
+			self.__motor.move(["down"])
+			self.__motor.move(["down","right"])
+			self.__motor.move(["down","left"])
+			self.__motor.move(["down"])
 			self.__laserGPIO.off()
 			time.sleep(self.__sleepTime)
 		pass
