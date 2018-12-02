@@ -8,13 +8,16 @@ from HumanStrategy import HumanStrategy
 from Camera import Camera
 class PetEntertainer():
     __objectStrategies = {}
+    __openedLED = LED(14)
+    __openedTopServo = Servo(20)
+    __openedBottomServo = Servo(21)
     def __init__(self):
         self.__network = cv2.dnn.readNetFromTensorflow('../Network/frozenInferenceGraph.pb',
                                    '../Network/persistedNetwork.pbtxt')
-        self.__objectStrategies["Dog"]=DogStrategy(Servo(21),Servo(20),LED(14))
-        self.__objectStrategies["Human"]=HumanStrategy(Servo(21),Servo(20),LED(14))
-        self.__objectStrategies["Cat"]=CatStrategy(Servo(21),Servo(20),LED(14))
-        self.__camera = Camera(piCamera())
+        self.__objectStrategies["dog"]=DogStrategy(self.__openedBottomServo,self.__openedTopServo,self.__openedLED)
+        self.__objectStrategies["person"]=HumanStrategy(self.__openedBottomServo,self.__openedTopServo,self.__openedLED)
+        self.__objectStrategies["cat"]=CatStrategy(self.__openedBottomServo,self.__openedTopServo,self.__openedLED)
+        self.__camera = Camera(PiCamera())
         self.__classifications = {0: 'background',1: 'person', 2: 'bicycle',
             3: 'car', 4: 'motorcycle', 5: 'airplane', 6: 'bus',
             7: 'train', 8: 'truck', 9: 'boat', 10: 'traffic light',
@@ -46,14 +49,17 @@ class PetEntertainer():
             if(not image is None):
                 self.__network.setInput(cv2.dnn.blobFromImage(image, 
                                         size=(300, 300), swapRB=True))
-                output = model.forward()
+                output =  self.__network.forward()
                 listOfObjects = [detection for detection in output[0, 0, :, :] 
                                            if detection[2] > .5]
                 for myObject in listOfObjects:
                     objectClassification=self.outputName(myObject[1])
+                    print("looking at a : "+objectClassification + " with "+ str(myObject[2]) + " certainty")
                     if objectClassification in self.__objectStrategies.keys():
-                        self.__objectStrategies.run()
+                        self.__objectStrategies[objectClassification].run()
+                    
             self.__camera.truncate()
+            
     
 if __name__=="__main__":
     myEntertainer = PetEntertainer()

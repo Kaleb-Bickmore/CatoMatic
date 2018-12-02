@@ -1,3 +1,4 @@
+import time
 class Interval():
 	def __init__(self,laserGPIO):
 		self.__laserGPIO = laserGPIO
@@ -5,10 +6,10 @@ class Interval():
 		self.__iterations = 5
 		pass
 	def run(self):
-		for i in range(iterations):
-			self.laserGPIO.on()
+		for i in range(self.__iterations):
+			self.__laserGPIO.on()
 			time.sleep(self.__sleepTime)
-			self.laserGPIO.off()
+			self.__laserGPIO.off()
 			time.sleep(self.__sleepTime)
 		pass
 	@property

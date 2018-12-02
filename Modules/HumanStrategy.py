@@ -7,6 +7,8 @@ class HumanStrategy():
 		self.__bottomServo = BottomServo(BottomServo)
 		self.__laser = Laser(laserServo)
 
-	def run():
+	def run(self):
+		self.__laser.on()
+		print("hooman, dance!")
 		pass
 

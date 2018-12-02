@@ -1,12 +1,13 @@
+import time
 class Constant():
 	def __init__(self,laserGPIO):
 		self.__laserGPIO = laserGPIO
 		self.__sleepTime = 5
 		pass
 	def run(self):
-		self.laserGPIO.on()
+		self.__laserGPIO.on()
 		time.sleep(self.__sleepTime)
-		self.laserGPIO.off()
+		self.__laserGPIO.off()
 		pass
 	@property
 	def sleepTime(self):

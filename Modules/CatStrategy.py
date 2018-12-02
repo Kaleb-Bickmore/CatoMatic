@@ -7,6 +7,8 @@ class CatStrategy():
 		self.__bottomServo = BottomServo(BottomServo)
 		self.__laser = Laser(laserServo)
 
-	def run():
+	def run(self):
+		print("laser for the kitty")
+		self.__laser.on()
 		pass
 
