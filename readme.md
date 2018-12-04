@@ -12,9 +12,12 @@ Python 3.5.3
 </br>
 opencv 3.4.3
 </br>
-various Rasberry Pi modules
+numpy 1.12.0 (downgraded for opencv compatibility)
 </br>
+various Rasberry Pi modules
+
 ## installing opencv for the Raspberry Pi
+</br>
 The raspberry pi requires various other libraries if
 you use pip to install opencv. If you build opencv from
 source, you should not have any problems. Using pip
@@ -36,13 +39,13 @@ sudo apt-get install libjasper-dev
 sudo apt-get install libqtgui4  
 </br>
 sudo apt-get install libqt4-test 
-</br>
+
 ## hardware requirements
-Raspberry Pi model 3B+ (*note model 3B works as well,
- but does lag when processing the images) 
+</br>
+Raspberry Pi model 3B+ 
 </br>
 Raspberry Pi Cam 
 </br>
 Diode 
 </br>
-pan tilt with mircro servos
+pan tilt with two mircro servos
