@@ -26,21 +26,21 @@ will save you time when downloading using the raspberry pi
 though.
 These are the cmds you should enter into the terminal: 
 </br> 
-`pip3 install opencv-python`  
+```pip3 install opencv-python```  
 </br>
-`sudo apt-get install libcblas-dev` 
+```sudo apt-get install libcblas-dev``` 
 </br>
-`sudo apt-get install libhdf5-deva` 
+```sudo apt-get install libhdf5-deva``` 
 </br>
-`sudo apt-get install libhdf5-serial-dev` 
+```sudo apt-get install libhdf5-serial-dev``` 
 </br>
-`sudo apt-get install libatlas-base-dev` 
+```sudo apt-get install libatlas-base-dev``` 
 </br>
-`sudo apt-get install libjasper-dev`  
+```sudo apt-get install libjasper-dev```  
 </br>
-`sudo apt-get install libqtgui4`  
+```sudo apt-get install libqtgui4```  
 </br>
-`sudo apt-get install libqt4-test` 
+```sudo apt-get install libqt4-test``` 
 
 ## hardware requirements
 </br>
