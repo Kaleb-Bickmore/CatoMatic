@@ -1,11 +1,12 @@
 # CatOMatic pet entertainment
 This system is designed to use a convoluted neural network
-for classifying various things and pets. The module
-I am using can be found here https://github.com/rdeepc/ExploreOpencvDnn and
+for classifying various things, but mainly people and pets. The neural network
+I am using for classification be found here https://github.com/rdeepc/ExploreOpencvDnn and
 was trained by Saumya Shovan Roy. 
-We will be feeding a live stream of photos to a raspberry pi
-with this module. We will then use this module to do various
-things once we detect a pet.
+</br>
+We wil use a camera on a raspberry pi to detect things like a pet or human. We will do something
+based on the object detected. In this code I have a laser hooked up to a pan-tilt and a speaker, both of which
+are linked to  a raspberry pi. We will use these objects to entertain the cats,humans, or dogs for now.
 ## software requirements
 </br>
 Python 3.5.3
@@ -24,21 +25,22 @@ source, you should not have any problems. Using pip
 will save you time when downloading using the raspberry pi
 though.
 These are the cmds you should enter into the terminal: 
-</br> pip3 install opencv-python  
+</br> 
+`pip3 install opencv-python`  
 </br>
-sudo apt-get install libcblas-dev 
+`sudo apt-get install libcblas-dev` 
 </br>
-sudo apt-get install libhdf5-deva 
+`sudo apt-get install libhdf5-deva` 
 </br>
-sudo apt-get install libhdf5-serial-dev 
+`sudo apt-get install libhdf5-serial-dev` 
 </br>
-sudo apt-get install libatlas-base-dev 
+`sudo apt-get install libatlas-base-dev` 
 </br>
-sudo apt-get install libjasper-dev  
+`sudo apt-get install libjasper-dev`  
 </br>
-sudo apt-get install libqtgui4  
+`sudo apt-get install libqtgui4`  
 </br>
-sudo apt-get install libqt4-test 
+`sudo apt-get install libqt4-test` 
 
 ## hardware requirements
 </br>
