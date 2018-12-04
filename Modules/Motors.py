@@ -3,11 +3,9 @@ from LeftState import LeftState
 from UpState import UpState
 from DownState import DownState
 import random
-'''
-	This class is used to control our servos in a way that we
-	keep track of the state of our servos. We must do this,
-	otherwise we would move randomly.
-'''
+	# This class is used to control our servos in a way that we
+	# keep track of the state of our servos. We must do this,
+	# otherwise we would move randomly.
 class Motors():
 	__possibleStates = {}
 	def __init__(self,topServo,bottomServo):
@@ -17,8 +15,8 @@ class Motors():
 		self.__possibleStates["right"] = RightState(bottomServo)
 		self.__currentState =[]
 		self.move(["down"])
-	# @direction: array of new states to move to
-	#
+
+	# @direction: array of new states to move to.
 	# repositions our servos to center, then it moves to the new states
 	# after it has been centered.
 	def move(self,direction):

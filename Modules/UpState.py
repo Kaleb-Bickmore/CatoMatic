@@ -1,3 +1,4 @@
+# This represents our motors in a up looking state
 class UpState():
 	def __init__(self,topServo):
 		self.__topServo = topServo
