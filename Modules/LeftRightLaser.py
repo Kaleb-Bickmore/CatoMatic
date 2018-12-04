@@ -1,23 +1,25 @@
 import time
-class Interval():
+# This is a strategy for moving our laser. This moves left to right
+# for the number of iterations set.
+class LeftRightLaser():
 	def __init__(self,laserGPIO,motor):
 		self.__laserGPIO = laserGPIO
-		self.__sleepTime = 1
-		self.__iterations = 5
+		self.__sleepTime = 2
+		self.__iterations = 4
 		self.__motor = motor
 		pass
+	# This runs our strategy
 	def run(self):
-		print("interval")
+		print("leftRightLaser")
+		self.__laserGPIO.on()
 		for i in range(self.__iterations):
-			self.__laserGPIO.on()
 			self.__motor.move(["down","right"])
-			self.__motor.move(["down","left"])
-			self.__motor.move(["down"])
-			self.__motor.move(["down","right"])
-			self.__motor.move(["down","left"])
-			self.__motor.move(["down"])
-			self.__laserGPIO.off()
 			time.sleep(self.__sleepTime)
+			self.__motor.move(["down","left"])
+			time.sleep(self.__sleepTime)
+		self.__motor.move(["down"])
+		time.sleep(self.__sleepTime)
+		self.__laserGPIO.off()
 		pass
 	@property
 	def sleepTime(self):
@@ -28,8 +30,8 @@ class Interval():
 		self.__sleepTime=sleepTime
 	@property
 	def iterations(self):
-		return self.iterations
+		return self.__iterations
 		pass
 	@iterations.setter
-	def iterations(self,iterations):
+	def sleepTime(self,iterations):
 		self.__iterations=iterations

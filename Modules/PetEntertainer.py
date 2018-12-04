@@ -1,4 +1,5 @@
 import numpy
+import time
 import cv2
 from picamera import PiCamera
 from gpiozero import LED, Servo
@@ -17,9 +18,10 @@ class PetEntertainer():
                                    '../Network/persistedNetwork.pbtxt')
         self.__motors = Motors(self.__openedBottomServo,self.__openedTopServo)
         self.__objectStrategies["dog"]=DogStrategy(self.__motors,self.__openedLED)
-        self.__objectStrategies["person"]=HumanStrategy(self.__motors,self.__openedLED)
+        self.__objectStrategies["person"]=HumanStrategy()
         self.__objectStrategies["cat"]=CatStrategy(self.__motors,self.__openedLED)
         self.__camera = Camera(PiCamera())
+        # All the possible outputs of the neural network
         self.__classifications = {0: 'background',1: 'person', 2: 'bicycle',
             3: 'car', 4: 'motorcycle', 5: 'airplane', 6: 'bus',
             7: 'train', 8: 'truck', 9: 'boat', 10: 'traffic light',
@@ -41,26 +43,43 @@ class PetEntertainer():
             86: 'vase', 87: 'scissors', 88: 'teddy bear', 89: 'hair drier', 90: 'toothbrush'}
 
 
-    def outputName(self,classNum):
-        if classNum in self.__classifications.keys():
-            return self.__classifications[classNum]
-
+    # This is the driver for the Petentertainer, it gets a video feed from
+    # the camera and inputs into the neural network.
+    # We have 3 classes currently that we do something for, people, Dogs,
+    # and Cats.
     def run(self):
+        #make sure the camera is warmed up
+        time.sleep(1)
         try:
             for frame in self.__camera.captureContinousFeed():
+                # truncate the 4 frames extra around the image to ensure
+                # we have the same number of frames as inputs into the
+                # convoluted network
                 image = frame.array[:300][:300]
+                # Depending on the positions of your camera you can eliminate
+                # this line of code below. My camera was inverted, so
+                # we need to flip the image.
+                image = cv2.flip(image,0)
+                
+                #cv2.imshow("what are we looking at",image)
+                #cv2.waitKey(0)
+                
                 if(not image is None):
                     self.__network.setInput(cv2.dnn.blobFromImage(image, 
                                         size=(300, 300), swapRB=True))
                     output =  self.__network.forward()
+                    #threshold our outputs
                     listOfObjects = [detection for detection in output[0, 0, :, :] 
-                                           if detection[2] > .5]
+                                           if detection[2] > .75]
                     for myObject in listOfObjects:
-                        objectClassification=self.outputName(myObject[1])
+                        objectClassification=self.__classifications[myObject[1]]
                         print("looking at : "+objectClassification + " with "+ str(myObject[2]) + " certainty")
                         if objectClassification in self.__objectStrategies.keys():
                             self.__objectStrategies[objectClassification].run()
                 self.__camera.truncate()
+                # give the camera a second to be ready for the next image.
+                # This helps to reduce blur in the image.
+                time.sleep(.3)
         except KeyboardInterrupt:
             self.__motors.moveMiddle()
         
