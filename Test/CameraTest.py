@@ -3,7 +3,7 @@ import cv2
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 import time
-from '../Modules/Camera.py' import Camera
+from Modules.Camera import Camera
 Class CameraTest():
     def __init(self):
         self.__camera = Camera(PiCamera())

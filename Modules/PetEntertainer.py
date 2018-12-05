@@ -11,11 +11,9 @@ from Camera import Camera
 class PetEntertainer():
     __objectStrategies = {}
     __openedLED = LED(14)
-    __openedTopServo =
-    __openedBottomServo =
     def __init__(self):
         self.__network = cv2.dnn.readNetFromTensorflow('../Network/frozenInferenceGraph.pb',
-                                   '../Network/persistedNetwork.pbtxt')
+                                                    '../Network/persistedNetwork.pbtxt')
         self.__motors = Motors(Servo(20),Servo(21))
         self.__objectStrategies["dog"]=DogStrategy(self.__motors,self.__openedLED)
         self.__objectStrategies["person"]=HumanStrategy()
@@ -76,10 +74,8 @@ class PetEntertainer():
                 # this line of code below. My camera was inverted, so
                 # we need to flip the image.
                 image = cv2.flip(image,0)
-
                 #cv2.imshow("what are we looking at",image)
                 #cv2.waitKey(0)
-
                 if(not image is None):
                     self.__network.setInput(cv2.dnn.blobFromImage(image,
                                         size=(300, 300), swapRB=True))
