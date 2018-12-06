@@ -1,7 +1,7 @@
 from gpiozero import LED, Servo
 import time
-Class LaserTest():
-    def __init(self):
+class LaserTest():
+    def __init__(self):
         self.__led = LED(14)
     def testLed(self):
         self.__led.on()

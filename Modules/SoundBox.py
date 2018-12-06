@@ -27,8 +27,4 @@ class SoundBox():
 			print(myTune)
 			mixer.music.load(myTune)
 			mixer.music.play()
-	# play a specific file from the directory we loaded at the beginning
-	def playSpecificFile(self,someFile):
-		if(os.path.isfile(self.__soundDir+"/"+someFile)):
-			mixer.music.load(self.__soundDir+"/"+someFile)
-			mixer.music.play()
+	

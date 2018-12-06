@@ -1,9 +1,11 @@
 import time
 from gpiozero import LED, Servo
-from Modules.Motors import Motors
+import sys
+sys.path.insert(0,"../Modules")
+from Motors import Motors
 
-Class MotorsTest():
-    def __init(self):
+class MotorsTest():
+    def __init__(self):
         self.__myMotors = Motors(Servo(20),Servo(21))
     def testUp(self):
         self.__myMotors.move(["up"])

@@ -1,18 +1,22 @@
 from gpiozero import LED, Servo
 import time
-from modules.SoundBox import SoundBox
-Class SoundBoxTest():
-    def __init(self):
-        self.__soundBox = SoundBox("../R2Noises")
+import sys
+sys.path.insert(0,"../Modules")
+from SoundBox import SoundBox
+class SoundBoxTest():
+    def __init__(self):
+        self.__soundBox = SoundBox("/home/pi/Documents/CatoMatic/R2Noises")
+    
     def testRandomNoise(self):
         self.__soundBox.play()
-        pass
-    def testSpecificNoise(self):
-        self.__soundBox.playSpecificFile("voice1.mp3")
-        pass
+ 
 if __name__=="__main__":
     soundBox = SoundBoxTest()
-    print("our sound box should play a random noise from a file")
+    time.sleep(5)
+    print("our sound box should play a random noise from a file 50 percent
+            of the time.")
     soundBox.testRandomNoise()
-    print("our sound box should voice1.mp3")
-    soundBox.testSpecificNoise()
+    time.sleep(5)
+    soundBox.testRandomNoise()
+    time.sleep(5)
+

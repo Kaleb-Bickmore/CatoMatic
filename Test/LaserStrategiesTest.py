@@ -1,20 +1,23 @@
 from gpiozero import LED, Servo
 import time
-from Modules.LaserMovementStrategies import LaserMovementStrategies
-from Modules.Motors import Motors
-Class LaserStrategiesTest():
-    def __init(self):
-        myLaserStrategy = LaserMovementStrategies(LED(14),Motors(Servo(20),Servo(21)))
+import sys
+sys.path.insert(0,"../Modules")
+
+from LaserMovementStrategies import LaserMovementStrategies
+from Motors import Motors
+class LaserStrategiesTest():
+    def __init__(self):
+        self.__myLaserStrategy = LaserMovementStrategies(LED(14),Motors(Servo(20),Servo(21)))
     def testCircle(self):
-        myLaserStrategy.circleLaser()
+        self.__myLaserStrategy.circleLaser()
     def testRandom(self):
-        myLaserStrategy.randomLaser()
+        self.__myLaserStrategy.randomLaser()
     def testLeftRight(self):
-        myLaserStrategy.leftRightLaser()
+        self.__myLaserStrategy.leftRightLaser()
     def testCentering(self):
-        myLaserStrategy.centeringLaser()
+        self.__myLaserStrategy.centeringLaser()
     def pickRandom(self):
-        myLaserStrategy.on()
+        self.__myLaserStrategy.on()
 
 if __name__=="__main__":
     laserStrategies = LaserStrategiesTest()
