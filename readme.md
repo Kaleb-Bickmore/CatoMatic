@@ -51,3 +51,6 @@ Raspberry Pi Cam
 Diode 
 </br>
 pan tilt with two mircro servos
+## How to run
+The main driver method is inside the PetEntertainer class inside the Modules Directory. Use the command `python3 PetEntertainer.py` and this will put the hardware inside a loop where it processes a video stream from a camera connected to the raspberry pi.
+

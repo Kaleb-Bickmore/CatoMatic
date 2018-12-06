@@ -42,7 +42,7 @@ class PetEntertainer():
     # @imageFile: this is the location of the image that we would like to read.
     # Runs the neural network on a specific image.
     def runOnImage(self,imageFile):
-        image = cv2.read(imageFile)
+        image = cv2.imread(imageFile)
         image = cv2.resize(image, (300, 300))
         if(not image is None):
             self.__network.setInput(cv2.dnn.blobFromImage(image,
