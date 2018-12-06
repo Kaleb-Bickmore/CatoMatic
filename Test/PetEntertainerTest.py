@@ -1,8 +1,10 @@
 from gpiozero import LED, Servo
 import time
-from Modules.PetEntertainer import PetEntertainer
-Class PetEntertainerTest():
-    def __init(self):
+import sys
+sys.path.insert(0,"../Modules")
+from PetEntertainer import PetEntertainer
+class PetEntertainerTest():
+    def __init__(self):
         self.__petEntertainer = PetEntertainer()
     def testPetEntertainerOnCat(self):
         self.__petEntertainer.runOnImage("images/cat.jpg")
